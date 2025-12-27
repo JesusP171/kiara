@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ti 🌷</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(to bottom, #ffe6f0, #fff);
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SOBRE */
+.sobre {
+    width: 340px;
+    height: 230px;
+    background: #ffb3d9;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    overflow: hidden;
+    touch-action: manipulation;
+}
+
+.sobre.abierto { overflow: visible; }
+
+/* TAPA */
+.tapa {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff5fa2;
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
+    transform-origin: top;
+    transition: transform 1s;
+    z-index: 3;
+}
+
+/* PAPEL */
+.papel {
+    position: absolute;
+    width: 92%;
+    height: 260px;
+    background: white;
+    left: 4%;
+    bottom: 5px;
+    border-radius: 12px;
+    padding: 18px;
+    box-sizing: border-box;
+    text-align: center;
+    transform: translateY(210px);
+    transition: transform 1.2s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    z-index: 1;
+}
+
+.papel h1 { color: #c2185b; font-size: 18px; margin-bottom: 10px; }
+.papel p { font-size: 15px; color: #444; line-height: 1.6; }
+
+.sobre.abierto .tapa { transform: rotateX(180deg); z-index: 1; }
+.sobre.abierto .papel { transform: translateY(-140px); z-index: 4; }
+
+/* ROSAS */
+.rosa {
+    position: absolute;
+    top: -50px;
+    font-size: 28px;
+    animation: caer linear infinite;
+}
+
+@keyframes caer {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* MODO TELÉFONO */
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    .sobre { width: 90vw; height: 260px; }
+    .papel { height: 300px; transform: translateY(230px); }
+    .sobre.abierto .papel { transform: translateY(-150px); }
+    .papel p { font-size: 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 MÚSICA -->
+<audio id="musica" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<div class="sobre" id="sobre">
+    <div class="tapa"></div>
+
+    <div class="papel">
+        <h1>🌷 Para ti 🌷</h1>
+        <p>
+            Quería desearte un día lleno de sonrisas,<br>
+            cosas bonitas y mucha felicidad.<br><br>
+            Gracias por ser una gran amiga 🩵<br><br>
+            <strong>FELIZ CUMPLEAÑOS 🎉</strong>
+        </p>
+    </div>
+</div>
+
+<script>
+const sobre = document.getElementById("sobre");
+const musica = document.getElementById("musica");
+let musicaIniciada = false;
+
+function iniciarMusica() {
+  if (!musicaIniciada) {
+    musica.volume = 0.9;
+    musica.play().catch(()=>{});
+    musicaIniciada = true;
+  }
+}
+
+function toggleCarta() {
+  iniciarMusica();   // ▶️ inicia música al primer toque
+  sobre.classList.toggle("abierto");
+}
+
+sobre.addEventListener("click", toggleCarta);
+
+sobre.addEventListener("touchstart", function(e) {
+  e.preventDefault();
+  toggleCarta();
+}, { passive: false });
+
+/* ROSAS */
+function crearRosa() {
+  const rosa = document.createElement("div");
+  rosa.classList.add("rosa");
+  rosa.innerHTML = "🌷";
+  rosa.style.left = Math.random() * 100 + "vw";
+  rosa.style.animationDuration = (Math.random() * 3 + 4) + "s";
+  document.body.appendChild(rosa);
+  setTimeout(() => rosa.remove(), 7000);
+}
+setInterval(crearRosa, 500);
+</script>
+
+</body>
+</html>
